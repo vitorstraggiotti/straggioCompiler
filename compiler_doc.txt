@@ -1,0 +1,179 @@
+
+This is a documentation of the straggio assembly compiler
+
+Author: Vitor Henrique Andrade Helfensteller Straggiotti Silva
+Date: 27/01/2021 (2021/01/27 - USA)
+
+===============================================================================
+
+Instructions:
+
+    ORG    <addr>   
+    ;Define the start memory address for the next compiled instructions.
+    ;By default the compiled instruction start from address 0x0000.
+    ;Ex:   0x0010|ADD    R2, R1   /      0x0010|0x89 (ADD R2, R1)
+           0x....|ORG    0x0045   / ==>  0x0045|0xDB (OR R2, R3)
+           0x....|OR     R2, R3   /
+
+
+    BYTE   <byte01>, <byte02>, <byte03>, ...
+    ;Define the sequence of bytes to save on program memory.
+    ;Ex:  0x0100|BYTE    0x58, 0x65, 0x85  / ==> 0x0100|0x58
+                                                 0x0101|0x65
+                                                 0x0102|0x85
+  
+*******************************************************************************
+Syntax:
+
+1) Everything after ";" are ignored by the compiler until the end of the line
+
+2) When address label are used everything on that same line are ignored.
+Ex:
+
+          ADD    R0, R1    | is the same as   |          ADD    R0, R1
+LABEL_01: OR     R1, R2    |=================>|LABEL_01: 
+          XOR    R2, R3    |                  |          XOR    R2, R3
+          JMP    LABEL_01  |                  |          JMP    LABEL_01
+
+
+*******************************************************************************
+HOW IT WORKS:
+
+1) First the compiler make a copy of the source code file into memory (char **) 
+
+|;***********************
+|; Header
+|;**********************
+|
+|            ORG    0
+|START:
+|            ADD    R2, R3
+|            XOR    R1, R0  ;Test test
+|            CLF
+|            JMP    0x0A8e  ;Test2 test 2
+|
+|            ; more test
+|
+|LABEL_01:
+|LABEL_02:
+|LABEL_03:
+|
+|            JC    LABEL_01
+|            JMPR  R3
+|            JMP   LABEL_10
+|            DTA   R2, 0x87
+|
+|LABEL_10:
+
+
+2) Source code goes through a cleaning process removing blank lines and comments
+
+|            ORG    0
+|START:
+|            ADD    R2, R3
+|            XOR    R1, R0
+|            CLF
+|            JMP    0x0A8e
+|LABEL_01:
+|LABEL_02:
+|LABEL_03:
+|            JC    LABEL_01
+|            JMPR  R3
+|            JMP   LABEL_10
+|            DTA   R2, 0x87
+|LABEL_10:
+
+
+3) 3.1) Read source code counting the number of address labels
+        #unsigned int numAddrLabels;
+
+   3.2) Knowing the number of address labels, read the source code again and
+        assign the address of each label from the sizes of each instruction 
+        between the labels. To relate each label with its address a structure
+        containing a char[x] and u_int16_t (for the label addr) will be used.
+        At the same time will be created a variable that specify the amount of 
+        program memory used.
+        #unsigned long int totalAddrSpace = 0;
+        #struct addrLabel
+        #{
+        #    char       label[ADDR_LABEL_BUFF_SIZE];
+        #    u_int16_t  addr;
+        #}
+
+numAddrlabels = 5;
+
+struct addrLabels addrLabels[numAddrLabels];
+                                 addrLabels[0].label = "START"
+                                 addrLabels[0].addr  = 0x0000
+
+totalAddrSpace = 0+1+1+1+3 = 6
+                                 addrLabels[1].label = "LABEL_01"
+                                 addrLabels[1].addr  = 0x0006
+
+                                 addrLabels[1].label = "LABEL_02"
+                                 addrLabels[1].addr  = 0x0006
+
+                                 addrLabels[1].label = "LABEL_03"
+                                 addrLabels[1].addr  = 0x0006
+
+totalAddrSpace = 6+3+1+3+2 = 15
+                                 addrLabels[1].label = "LABEL_10"
+                                 addrLabels[1].addr  = 0x000F 
+
+0x0000|            ORG    0
+0x0000|START:
+0x0000|            ADD    R2, R3    (1 byte)
+0x0001|            XOR    R1, R0    (1 byte)
+0x0002|            CLF              (1 byte)
+0x0003|            JMP    0x0A8e    (3 bytes)
+0x0006|LABEL_01:
+0x0006|LABEL_02:
+0x0006|LABEL_03:
+0x0006|            JC    LABEL_01   (3 bytes)
+0x0009|            JMPR  R3         (1 byte)
+0x000A|            JMP   LABEL_10   (3 bytes)
+0x000D|            DTA   R2, 0x87   (2 bytes)
+0x000F|LABEL_10:
+
+
+4) 4.1) Read the source code and instruction set to translate all instructions. 
+        The translated code is saved on a structure containing u_int16_t
+        (memory addr) and u_int8_t (insttruction or data)
+        #struct instructionMap
+        #{
+        #    u_int8_t instrucOrData;
+        #    
+
+
+memoryMap[totalAddrSpace];
+                                 memoryMap[0].instrucOrData = 0x8B
+                                 memoryMap[1].instrucOrData = 0x8B
+
+      |            ORG    0
+0x0000|START:
+0x0000|            0x8B
+
+0x0001|            0xE4
+
+0x0002|            0x60
+
+0x0003|            0x40
+0x0004|            0x0A  ;Big-endian
+0x0005|            0x8e
+
+0x0006|LABEL_01:
+0x0006|LABEL_02:
+0x0006|LABEL_03:
+0x0006|            0x58
+0x0007|            LABEL_01_H ;Big-endian
+0x0008|            LABEL_01_L
+
+0x0009|            0x33
+
+0x000A|            0x40
+0x000B|            LABEL_10_H ;Big-endian
+0x000C|            LABEL_10_L
+
+0x000D|            0x22
+0x000E|            0x87
+0x000F|LABEL_10:

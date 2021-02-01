@@ -1,0 +1,365 @@
+INSTRUCTION SET DOCUMENTATION FOR STRAGGIO CPU
+# 8 bit instructions 
+# 16 bit addressing
+
+Author: Vitor Henrique Andrade Helfensteller Straggiotti Silva
+Created on: 31/01/2021 (DD/MM/YYYY)
+
+
+##### simplified instructions for the arithmetic logic unit ###################
+
+ADD  RegA, RegB (Sum registers A and B and save result in B)                                                       [1 byte]
+SHL  RegA, RegB (Shifts register A by 1 bit to the left and saves result in B)                                     [1 byte]
+SHR  RegA, RegB (Shifts register A by 1 bit to the right and saves result in B)                                    [1 byte]
+NOT  RegA, RegB (Performs the complement of register A and saves it in register B)                                 [1 byte]
+AND  RegA, RegB (Performs bitwise AND logic of RegA with RegB and saves in RegB)                                   [1 byte]
+OR   RegA, RegB (Performs bitwise OR logic of RegA with RegB and saves it in RegB)                                 [1 byte]
+XOR  RegA, RegB (Performs bitwise XOR logic of RegA with RegB and saves it in RegB)                                [1 byte]
+CMP  RegA, RegB (Compare RegA with RegB by creating two flags: [RegA == RegB], [RegA> RegB]. Does not save byte)   [1 byte]
+
+
+##### general simplified instructions #########################################
+
+LD    RegA, RegB (Load from RAM to RegB. RAM address is in RegA)(RAM ==> RegB)                                     [?]
+ST    RegA, RegB (Stores the value of RegB in RAM. Address is in RegA)(RegB ==> RAM)                               [?]
+DTA   RegB, data (Load immediate value "data" in RegB)                                                             [1 byte]
+JMPR  RegB       (Divert program to address contained in RegB)                                                     [1 byte]
+JMP   Addr       (Divert program to immediate address "Addr")                                                      [3 byte]
+CLF              (Clear all flags)                                                                                 [1 byte]
+IND   RegB       (Request a data from the peripheral device and save it in RegB)                                   [1 byte]
+INA   RegB       (Request an address from the peripheral device and save it in RegB)                               [1 byte]
+OUTD  RegB       (Sends RegB data to the peripheral device)                                                        [1 byte]
+OUTA  RegB       (Sends RegB address to the peripheral device)                                                     [1 byte]
+
+*** The following instructions depend on the execution of previous instructions that generate flags ***
+
+JC     Addr (Divert program to immediate address if: carry == 1)                                                   []
+JA     Addr (Divert program to immediate address if: RegA > RegB)                                                  []
+JE     Addr (Divert program to immediate address if: RegA == RegB)                                                 []
+JZ     Addr (Divert program to immediate address if: Acc == 0)                                                     []
+JCA    Addr (Divert program to immediate address if: carry == 1 or RegA > RegB)                                    []
+JCE    Addr (Divert program to immediate address if: carry == 1 or RegA == RegB)                                   []
+JCZ    Addr (Divert program to immediate address if: carry == 1 or Acc == 0)                                       []
+JAE    Addr (Divert program to immediate address if: RegA >= RegB)                                                 []
+JAZ    Addr (Divert program to immediate address if: RegA > RegB or Acc == 0)                                      []
+JEZ    Addr (Divert program to immediate address if: RegA == RegB or Acc == 0)                                     []
+JCAE   Addr (Divert program to immediate address if: carry == 1 or RegA >= RegB)                                   []
+JCAZ   Addr (Divert program to immediate address if: carry == 1 or RegA > RegB or Acc == 0)                        []
+JCEZ   Addr (Divert program to immediate address if: carry == 1 or RegA == RegB or Acc == 0)                       []
+JAEZ   Addr (Divert program to immediate address if: RegA >= RegB or Acc == 0)                                     []
+JCAEZ  Addr (Divert program to immediate address if: RegA >= RegB or carry == 1 or Acc == 0)                       []
+
+===============================================================================
+#####  Complete instructions for the arithmetic logic unit ####################
+
+ADD RegA, RegB  (Sum registers A and B and save result in B)
+    ADD R0, R0  [10000000],[0x80]
+    ADD R0, R1  [10000001],[0x81]
+    ADD R0, R2  [10000010],[0x82]
+    ADD R0, R3  [10000011],[0x83]
+
+    ADD R1, R0  [10000100],[0x84]
+    ADD R1, R1  [10000101],[0x85]
+    ADD R1, R2  [10000110],[0x86]
+    ADD R1, R3  [10000111],[0x87]
+
+    ADD R2, R0  [10001000],[0x88]
+    ADD R2, R1  [10001001],[0x89]
+    ADD R2, R2  [10001010],[0x8A]
+    ADD R2, R3  [10001011],[0x8B]
+
+    ADD R3, R0  [10001100],[0x8C]
+    ADD R3, R1  [10001101],[0x8D]
+    ADD R3, R2  [10001110],[0x8E]
+    ADD R3, R3  [10001111],[0x8F]
+
+
+SHL RegA, RegB  (Shifts register A by 1 bit to the left and saves result in B)
+    SHL R0, R0  [10010000],[0x90]
+    SHL R0, R1  [10010001],[0x91]
+    SHL R0, R2  [10010010],[0x92]
+    SHL R0, R3  [10010011],[0x90]
+
+    SHL R1, R0  [10010100],[0x94]
+    SHL R1, R1  [10010101],[0x95]
+    SHL R1, R2  [10010110],[0x96]
+    SHL R1, R3  [10010111],[0x97]
+
+    SHL R2, R0  [10011000],[0x98]
+    SHL R2, R1  [10011001],[0x99]
+    SHL R2, R2  [10011010],[0x9A]
+    SHL R2, R3  [10011011],[0x9B]
+
+    SHL R3, R0  [10011100],[0x9C]
+    SHL R3, R1  [10011101],[0x9D]
+    SHL R3, R2  [10011110],[0x9E]
+    SHL R3, R3  [10011111],[0x9F]
+
+
+SHR RegA, RegB  (Shifts register A by 1 bit to the right and saves result in B)
+    SHR R0, R0  [10100000],[0xA0]
+    SHR R0, R1  [10100001],[0xA1]
+    SHR R0, R2  [10100010],[0xA2]
+    SHR R0, R3  [10100011],[0xA3]
+
+    SHR R1, R0  [10100100],[0xA4]
+    SHR R1, R1  [10100101],[0xA5]
+    SHR R1, R2  [10100110],[0xA6]
+    SHR R1, R3  [10100111],[0xA7]
+
+    SHR R2, R0  [10101000],[0xA8]
+    SHR R2, R1  [10101001],[0xA9]
+    SHR R2, R2  [10101010],[0xAA]
+    SHR R2, R3  [10101011],[0xAB]
+
+    SHR R3, R0  [10101100],[0xAC]
+    SHR R3, R1  [10101101],[0xAD]
+    SHR R3, R2  [10101110],[0xAE]
+    SHR R3, R3  [10101111],[0xAF]
+
+
+NOT RegA, RegB  (Performs the complement of register A and saves it in register B)
+    NOT R0, R0  [10110000],[0xB0]
+    NOT R0, R1  [10110001],[0xB1]
+    NOT R0, R2  [10110010],[0xB2]
+    NOT R0, R3  [10110011],[0xB3]
+
+    NOT R1, R0  [10110100],[0xB4]
+    NOT R1, R1  [10110101],[0xB5]
+    NOT R1, R2  [10110110],[0xB6]
+    NOT R1, R3  [10110111],[0xB7]
+
+    NOT R2, R0  [10111000],[0xB8]
+    NOT R2, R1  [10111001],[0xB9]
+    NOT R2, R2  [10111010],[0xBA]
+    NOT R2, R3  [10111011],[0xBB]
+
+    NOT R3, R0  [10111100],[0xBC]
+    NOT R3, R1  [10111101],[0xBD]
+    NOT R3, R2  [10111110],[0xBE]
+    NOT R3, R3  [10111111],[0xBF]
+
+
+AND RegA, RegB  (Performs bitwise AND logic of RegA with RegB and saves in RegB)
+    AND R0, R0  [11000000],[0xC0]
+    AND R0, R1  [11000001],[0xC1]
+    AND R0, R2  [11000010],[0xC2]
+    AND R0, R3  [11000011],[0xC3]
+
+    AND R1, R0  [11000100],[0xC4]
+    AND R1, R1  [11000101],[0xC5]
+    AND R1, R2  [11000110],[0xC6]
+    AND R1, R3  [11000111],[0xC7]
+
+    AND R2, R0  [11001000],[0xC8]
+    AND R2, R1  [11001001],[0xC9]
+    AND R2, R2  [11001010],[0xCA]
+    AND R2, R3  [11001011],[0xCB]
+
+    AND R3, R0  [11001100],[0xCC]
+    AND R3, R1  [11001101],[0xCD]
+    AND R3, R2  [11001110],[0xCE]
+    AND R3, R3  [11001111],[0xCF]
+
+
+OR RegA, RegB  (Performs bitwise OR logic of RegA with RegB and saves it in RegB)
+    OR R0, R0  [11010000],[0xD0]
+    OR R0, R1  [11010001],[0xD1]
+    OR R0, R2  [11010010],[0xD2]
+    OR R0, R3  [11010011],[0xD3]
+
+    OR R1, R0  [11010100],[0xD4]
+    OR R1, R1  [11010101],[0xD5]
+    OR R1, R2  [11010110],[0xD6]
+    OR R1, R3  [11010111],[0xD7]
+
+    OR R2, R0  [11011000],[0xD8]
+    OR R2, R1  [11011001],[0xD9]
+    OR R2, R2  [11011010],[0xDA]
+    OR R2, R3  [11011011],[0xDB]
+
+    OR R3, R0  [11011100],[0xDC]
+    OR R3, R1  [11011101],[0xDD]
+    OR R3, R2  [11011110],[0xDE]
+    OR R3, R3  [11011111],[0xDF]
+
+
+XOR RegA, RegB  (Performs bitwise XOR logic of RegA with RegB and saves it in RegB)
+    XOR R0, R0  [11100000],[0xE0]
+    XOR R0, R1  [11100001],[0xE1]
+    XOR R0, R2  [11100010],[0xE2]
+    XOR R0, R3  [11100011],[0xE3]
+
+    XOR R1, R0  [11100100],[0xE4]
+    XOR R1, R1  [11100101],[0xE5]
+    XOR R1, R2  [11100110],[0xE6]
+    XOR R1, R3  [11100111],[0xE7]
+
+    XOR R2, R0  [11101000],[0xE8]
+    XOR R2, R1  [11101001],[0xE9]
+    XOR R2, R2  [11101010],[0xEA]
+    XOR R2, R3  [11101011],[0xEB]
+
+    XOR R3, R0  [11101100],[0xEC]
+    XOR R3, R1  [11101101],[0xED]
+    XOR R3, R2  [11101110],[0xEE]
+    XOR R3, R3  [11101111],[0xEF]
+
+
+CMP RegA, RegB  (Compare RegA with RegB by creating two flags: [RegA == RegB], [RegA> RegB]. Does not save byte)
+    CMP R0, R0  [11110000],[0xF0]
+    CMP R0, R1  [11110001],[0xF1]
+    CMP R0, R2  [11110010],[0xF2]
+    CMP R0, R3  [11110011],[0xF3]
+
+    CMP R1, R0  [11110100],[0xF4]
+    CMP R1, R1  [11110101],[0xF5]
+    CMP R1, R2  [11110110],[0xF6]
+    CMP R1, R3  [11110111],[0xF7]
+
+    CMP R2, R0  [11111000],[0xF8]
+    CMP R2, R1  [11111001],[0xF9]
+    CMP R2, R2  [11111010],[0xFA]
+    CMP R2, R3  [11111011],[0xFB]
+
+    CMP R3, R0  [11111100],[0xFC]
+    CMP R3, R1  [11111101],[0xFD]
+    CMP R3, R2  [11111110],[0xFE]
+    CMP R3, R3  [11111111],[0xFF]
+
+##### Complete general instructions ###########################################
+
+LD RegA, RegB  ???? (Load from RAM to RegB. RAM address is in RegA)(RAM ==> RegB)
+
+ST RegA, RegB  ???? (Stores the value of RegB in RAM. Address is in RegA)(RegB ==> RAM)
+
+
+DTA RegB, data (Load immediate value "data" in RegB)
+    ** xx bits corresponding to RegA can be any. will be adopted xx = 00 **
+    ** 0xYY (8 bits) corresponding to "data". Recorded at the address immediately following **
+    DTA R0, data  [0010xx00],[0x20] / [0xYY]
+    DTA R1, data  [0010xx01],[0x21] / [0xYY]
+    DTA R2, data  [0010xx10],[0x22] / [0xYY]
+    DTA R3, data  [0010xx11],[0x23] / [0xYY]
+
+
+JMPR RegB (Divert program to address contained in RegB)
+    ** bits xx corresponding to RegA can be any. xx = 00 will be adopted **
+    JMPR R0  [0011xx00],[0x30]
+    JMPR R1  [0011xx01],[0x31]
+    JMPR R2  [0011xx10],[0x32]
+    JMPR R3  [0011xx11],[0x33]
+
+
+JMP Addr (Divert program to immediate address "Addr")
+    ** xxxx bits corresponding to RegA and RegB can be any. xxxx = 0000 will be adopted **
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address immediately following **
+    JMP Addr  [0100xxxx],[0x40] / [0xYY][0xZZ] (Big-endian)
+
+
+JC Addr (Divert program to immediate address if: carry == 1)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JC Addr  [01011000],[0x58] / [0xYY][0xZZ] (Big-endian)
+
+
+JA Addr (Divert program to immediate address if: RegA > RegB)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JA Addr  [01010100],[0x54] / [0xYY][0xZZ] (Big-endian)
+
+
+JE Addr (Divert program to immediate address if: RegA == RegB)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JE Addr  [01010010],[0x52] / [0xYY][0xZZ] (Big-endian)
+
+
+JZ Addr (Divert program to immediate address if: Acc == 0)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JZ Addr  [01010001],[0x51] / [0xYY][0xZZ] (Big-endian)
+
+
+JCA Addr (Divert program to immediate address if: carry == 1 or RegA > RegB)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JCA Addr  [01011100],[0x5C] / [0xYY][0xZZ] (Big-endian)
+
+
+JCE Addr (Divert program to immediate address if: carry == 1 or RegA == RegB)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JCE Addr  [01011010],[0x5A] / [0xYY][0xZZ] (Big-endian)
+
+
+JCZ Addr (Divert program to immediate address if: carry == 1 or Acc == 0)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JCZ Addr  [01011001],[0x59] / [0xYY][0xZZ] (Big-endian)
+
+
+JAE Addr (Divert program to immediate address if: RegA >= RegB)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JAE Addr  [01010110],[0x56] / [0xYY][0xZZ] (Big-endian)
+
+
+JAZ Addr (Divert program to immediate address if: RegA > RegB or Acc == 0)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JAZ Addr  [01010101],[0x55] / [0xYY][0xZZ] (Big-endian)
+
+
+JEZ Addr (Divert program to immediate address if: RegA == RegB or Acc == 0)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JEZ Addr  [01010011],[0x53] / [0xYY][0xZZ] (Big-endian)
+
+
+JCAE Addr (Divert program to immediate address if: carry == 1 or RegA >= RegB)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JCAE Addr  [01011110],[0x5E] / [0xYY][0xZZ] (Big-endian)
+
+
+JCAZ Addr (Divert program to immediate address if: carry == 1 or RegA > RegB or Acc == 0)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JCAZ Addr  [01011101],[0x5D] / [0xYY][0xZZ] (Big-endian)
+
+
+JCEZ Addr (Divert program to immediate address if: carry == 1 or RegA == RegB or Acc == 0)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JCEZ Addr  [01011011],[0x5B] / [0xYY][0xZZ] (Big-endian)
+
+
+JAEZ Addr (Divert program to immediate address if: RegA >= RegB or Acc == 0) 
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JAEZ Addr  [01010111],[0x57] / [0xYY][0xZZ] (Big-endian)
+
+
+JCAEZ Addr (Divert program to immediate address if: RegA >= RegB or carry == 1 or Acc == 0)
+    ** 0xYYZZ (16 bits) corresponding to the address. Recorded at the address imediately following **
+    JCAEZ Addr  [01011111],[0x5F] / [0xYY][0xZZ] (Big-endian)
+
+
+CLF (Clear all flags)
+    ** xxxx bits corresponding to RegA and RegB can be any. xxxx = 0000 will be adopted **
+    CLF  [0110xxxx],[0x60]
+
+
+IND RegB (Request a data from the peripheral device and save it in RegB)
+    IND   R0  [01110000],[0x70]
+    IND   R1  [01110001],[0x71]
+    IND   R2  [01110010],[0x72]
+    IND   R3  [01110011],[0x73]
+
+
+INA  RegB (Request an address from the peripheral device and save it in RegB) 
+    INA   R0  [01110100],[0x74]
+    INA   R1  [01110101],[0x75]
+    INA   R2  [01110110],[0x76]
+    INA   R3  [01110111],[0x77]
+
+
+OUTD RegB (Sends RegB data to the peripheral device)
+    OUTD  R0  [01111000],[0x78]
+    OUTD  R1  [01111001],[0x79]
+    OUTD  R2  [01111010],[0x7A]
+    OUTD  R3  [01111011],[0x7B]
+
+
+OUTA RegB (Sends RegB address to the peripheral device)
+    OUTA  R0  [01111100],[0x7C]
+    OUTA  R1  [01111101],[0x7D]
+    OUTA  R2  [01111110],[0x7E]
+    OUTA  R3  [01111111],[0x7F]
