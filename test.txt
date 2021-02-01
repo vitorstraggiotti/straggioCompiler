@@ -1,0 +1,30 @@
+
+;****************************************
+;Este e um comentario e nao deve ser lido
+;
+;****************************************
+
+
+
+TEST:   
+         ORG    0
+         ADD    R2, R3
+         XOR    R1, R0   ;Comentario de teste
+         CLF
+         JMP    0x0A8e   ; segundo comentario aleatorio
+         JMP    TEST     ; um teste
+
+         ; mais teste de comentario
+LABEL_01:
+LABEL_02:
+LABEL_03:
+
+         JC    LABEL_01
+         JMPR  R4
+         JMP   LABEL_10
+         DTA   R2, 0x87
+
+
+
+LABEL_10:
+
