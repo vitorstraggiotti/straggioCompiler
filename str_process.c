@@ -2,7 +2,7 @@
     String processing library
 
     Author: Vitor Henrique Andrade Helfensteller Straggiotti Silva
-    Start date: 30/10/2020
+    Created on: 30/10/2020
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include<stdio.h>

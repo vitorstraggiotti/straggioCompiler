@@ -2,7 +2,7 @@
     String processing library header file
 
     Author: Vitor Henrique Andrade Helfensteller Straggiotti Silva
-    Start date: 30/10/2020
+    Created on: 30/10/2020
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #ifndef _STR_PROCESS_H_

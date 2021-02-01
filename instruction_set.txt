@@ -133,62 +133,62 @@
  CMP R3, R1                  = [0xFD]
  CMP R3, R2                  = [0xFE]
  CMP R3, R3                  = [0xFF]
- LD R0, R0
- LD R0, R1
- LD R0, R2
- LD R0, R3
- LD R1, R0
- LD R1, R1
- LD R1, R2
- LD R1, R3
- LD R2, R0
- LD R2, R1
- LD R2, R2
- LD R2, R3
- LD R3, R0
- LD R3, R1
- LD R3, R2
- LD R3, R3
- ST R0, R0
- ST R0, R1
- ST R0, R2
- ST R0, R3
- ST R1, R0
- ST R1, R1
- ST R1, R2
- ST R1, R3
- ST R2, R0
- ST R2, R1
- ST R2, R2
- ST R2, R3
- ST R3, R0
- ST R3, R1
- ST R3, R2
- ST R3, R3
- DTA R0, data                = [0x20]  [0xYY]
- DTA R1, data                = [0x21]  [0xYY]
- DTA R2, data                = [0x22]  [0xYY]
- DTA R3, data                = [0x23]  [0xYY]
+ LD R0, R0                   = []
+ LD R0, R1                   = []
+ LD R0, R2                   = []
+ LD R0, R3                   = []
+ LD R1, R0                   = []
+ LD R1, R1                   = []
+ LD R1, R2                   = []
+ LD R1, R3                   = []
+ LD R2, R0                   = []
+ LD R2, R1                   = []
+ LD R2, R2                   = []
+ LD R2, R3                   = []
+ LD R3, R0                   = []
+ LD R3, R1                   = []
+ LD R3, R2                   = []
+ LD R3, R3                   = []
+ ST R0, R0                   = []
+ ST R0, R1                   = []
+ ST R0, R2                   = []
+ ST R0, R3                   = []
+ ST R1, R0                   = []
+ ST R1, R1                   = []
+ ST R1, R2                   = []
+ ST R1, R3                   = []
+ ST R2, R0                   = []
+ ST R2, R1                   = []
+ ST R2, R2                   = []
+ ST R2, R3                   = []
+ ST R3, R0                   = []
+ ST R3, R1                   = []
+ ST R3, R2                   = []
+ ST R3, R3                   = []
+ DTA R0, 0xYY                = [0x20]
+ DTA R1, 0xYY                = [0x21]
+ DTA R2, 0xYY                = [0x22]
+ DTA R3, 0xYY                = [0x23]
  JMPR R0                     = [0x30]
  JMPR R1                     = [0x31]
  JMPR R2                     = [0x32]
  JMPR R3                     = [0x33]
- JMP Addr                    = [0x40]  [0xYY][0xZZ]
- JC Addr                     = [0x58]  [0xYY][0xZZ]
- JA Addr                     = [0x54]  [0xYY][0xZZ]
- JE Addr                     = [0x52]  [0xYY][0xZZ]
- JZ Addr                     = [0x51]  [0xYY][0xZZ]
- JCA Addr                    = [0x5C]  [0xYY][0xZZ]
- JCE Addr                    = [0x5A]  [0xYY][0xZZ]
- JCZ Addr                    = [0x59]  [0xYY][0xZZ]
- JAE Addr                    = [0x56]  [0xYY][0xZZ]
- JAZ Addr                    = [0x55]  [0xYY][0xZZ]
- JEZ Addr                    = [0x53]  [0xYY][0xZZ]
- JCAE Addr                   = [0x5E]  [0xYY][0xZZ]
- JCAZ Addr                   = [0x5D]  [0xYY][0xZZ]
- JCEZ Addr                   = [0x5B]  [0xYY][0xZZ]
- JAEZ Addr                   = [0x57]  [0xYY][0xZZ]
- JCAEZ Addr                  = [0x5F]  [0xYY][0xZZ]
+ JMP 0xYYYY                  = [0x40]
+ JC 0xYYYY                   = [0x58]
+ JA 0xYYYY                   = [0x54]
+ JE 0xYYYY                   = [0x52]
+ JZ 0xYYYY                   = [0x51]
+ JCA 0xYYYY                  = [0x5C]
+ JCE 0xYYYY                  = [0x5A]
+ JCZ 0xYYYY                  = [0x59]
+ JAE 0xYYYY                  = [0x56]
+ JAZ 0xYYYY                  = [0x55]
+ JEZ 0xYYYY                  = [0x53]
+ JCAE Addr                   = [0x5E]
+ JCAZ Addr                   = [0x5D]
+ JCEZ Addr                   = [0x5B]
+ JAEZ Addr                   = [0x57]
+ JCAEZ Addr                  = [0x5F]
  CLF                         = [0x60]
  IND   R0                    = [0x70]
  IND   R1                    = [0x71]

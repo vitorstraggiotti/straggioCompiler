@@ -1,6 +1,9 @@
-##################################################
-# Makefile for compiling the assembler program   #
-##################################################
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Makefile for compiling the straggio compiler                   #
+#                                                                #
+# Author: Vitor Henrique Andrade Helfensteller Straggiotti Silva #
+# Created on: 25/01/2021 (DD/MM/YYYY)                            #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Compiler used
 CC = gcc
