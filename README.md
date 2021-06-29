@@ -1,4 +1,3 @@
-# straggioCompiler
-
-## An assembly compiler for a home built computer
+# straggioCompiler [NOT Working yet]
+An assembly compiler for a home built computer
 
